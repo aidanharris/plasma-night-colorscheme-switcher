@@ -5,8 +5,8 @@ use tokio::time::{sleep, Duration};
 
 fn get_scheme(is_day: bool) -> String {
     dotenv::dotenv().ok();
-    let light_scheme = dotenv::var("LIGHT_SCHEME").unwrap_or("BreezeClassic".to_string());
-    let dark_scheme = dotenv::var("DARK_SCHEME").unwrap_or("BreezeDark".to_string());
+    let light_scheme = &dotenv::var("LIGHT_SCHEME").unwrap_or("BreezeClassic".to_string());
+    let dark_scheme = &dotenv::var("DARK_SCHEME").unwrap_or("BreezeDark".to_string());
     match is_day {
         true => light_scheme.to_string(),
         _ => dark_scheme.to_string(),
@@ -24,7 +24,7 @@ async fn change_theme(theme: &str) {
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().ok();
-    let location = dotenv::var("LOCATION").unwrap_or("51.509865,-0.118092".to_string());
+    let location = &dotenv::var("LOCATION").unwrap_or("51.509865,-0.118092".to_string());
     let location = location.split(",");
     let location = location.collect::<Vec<&str>>();
     let long: f64 = location[0].parse().unwrap();
