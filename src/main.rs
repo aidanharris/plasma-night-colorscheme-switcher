@@ -39,10 +39,15 @@ async fn main() {
             sunrise::sunrise_sunset(long, lat, next_day.year(), next_day.month(), next_day.day());
 
         let is_day = now.timestamp() < sunset;
+        let is_day = match now.timestamp() < sunrise && now.timestamp() < sunrise_next {
+            true => false,
+            _ => is_day
+        };
         let scheme = get_scheme(is_day);
         change_theme(&scheme).await;
 
-        println!("now: {} sunrise: {} sunset: {}", is_day, sunrise, sunset);
+        println!("now: {}({})\tsunrise: {}\tsunset: {}", now.timestamp(), is_day, sunrise, sunset);
+        println!("now: {}({})\tsunrise_next: {}\tsunset_next: {}", now.timestamp(), is_day, sunrise_next, _sunset_next);
 
         let dur = match now.timestamp() < sunset {
             true => Duration::from_secs((sunset - now.timestamp()).try_into().unwrap()),
